@@ -1,8 +1,8 @@
 template <typename T>
 class Coordinate{
+  public:
   typedef std::vector<T> coord_t;
 
-  public:
   coord_t coord = {};
 
   Coordinate(std::vector<T> c): coord(c){}

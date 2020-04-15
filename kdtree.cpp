@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "coordinate.h"
+#include <limits>
+#include "utils.cpp"
 
 template <typename T, int D>
 class KDNode{
@@ -41,6 +42,42 @@ class KDTree{
     return false;
   }
 
+  Coordinate<T>* closestCoord(Coordinate<T> *target, Coordinate<T> *c1, Coordinate<T> *c2){
+    if (!c1 || !c2) return c1? c1 : c2; // if any coord is null, return the other one
+    return euclideanDist(*target, *c1)<euclideanDist(*target, *c2)? c1 : c2;
+  }
+
+  Coordinate<T>* recursiveSearch(KDNode<T,D>* parent, Coordinate<T> *target, int dim){
+    if (!parent) return nullptr;
+
+    dim=++dim%D;
+    
+    // closest coord is itself
+    if (*target == parent->coordinate) return target; 
+
+    KDNode<T,D>* selected_side;
+    KDNode<T,D>* other_side;
+
+    if ((*target)[dim] >= parent->coordinate[dim]){
+      selected_side = parent->right;
+      other_side = parent->left;
+    }
+    else{
+      selected_side = parent->left;
+      other_side = parent->right;
+    }
+
+    // Search in selected subtree and compare with the parent
+    Coordinate<T> *favorite = closestCoord(target, &parent->coordinate, recursiveSearch(selected_side, target, dim));
+
+    // // If the selected side didn't have anything best, look on the other side
+    if (*favorite == parent->coordinate){
+      favorite = closestCoord(target, &parent->coordinate, recursiveSearch(other_side, target, dim));
+    }
+
+    return favorite;
+  }
+
   public:
   void insert(Coordinate<T> target){
     KDNode<T,D>* new_node = new KDNode<T,D>(target);
@@ -58,6 +95,12 @@ class KDTree{
     *pointer = new_node;
   }
 
+  Coordinate<T> search(Coordinate<T> target){
+    if (!root) throw "Can't search in empty tree";
+    // Coordinate<T>* ptarget = &target;
+    return *recursiveSearch(root, &target, -1);
+  }
+
   KDTree(){};
   ~KDTree(){};
 };
@@ -71,4 +114,6 @@ int main(){
     Coordinate<int> coord(dot);
     tree.insert(coord);
   }
+
+  std::cout << tree.search(Coordinate<int>({0, 0}));
 }
