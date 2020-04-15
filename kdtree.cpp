@@ -24,7 +24,7 @@ template <typename T, int D>
 class KDTree{
   KDNode<T,D>* root = nullptr;
 
-  bool find(KDNode<T,D>** &pointer, Coordinate<T> target){
+  bool helperFind(KDNode<T,D>** &pointer, Coordinate<T> target){
     if (!root) { return false; }
 
     int dim=-1;
@@ -88,7 +88,7 @@ class KDTree{
     }
     
     KDNode<T,D>** pointer = &root;
-    if (find(pointer ,target)){
+    if (helperFind(pointer ,target)){
       std::cout << "Already in tree\n";
       return;
     }
@@ -99,6 +99,11 @@ class KDTree{
     if (!root) throw "Can't search in empty tree";
     // Coordinate<T>* ptarget = &target;
     return *recursiveSearch(root, &target, -1);
+  }
+
+  bool isInTree(Coordinate<T> target){
+    KDNode<T,D>** pointer = &root;
+    return helperFind(pointer, target);
   }
 
   KDTree(){};
@@ -115,5 +120,8 @@ int main(){
     tree.insert(coord);
   }
 
-  std::cout << tree.search(Coordinate<int>({0, 0}));
+  std::cout << tree.search(Coordinate<int>({0, 0})) << std::endl;
+  std::cout << tree.isInTree(Coordinate<int>({2, 7})) << std::endl;
+  std::cout << tree.isInTree(Coordinate<int>({7, 13})) << std::endl;
+
 }
