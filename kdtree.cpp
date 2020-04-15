@@ -112,16 +112,16 @@ class KDTree{
 
 int main(){
 
-  std::vector<std::vector<int>> dots = {{3,6}, {2,7}, {17,15}, {6,12}, {13,15}, {9,1}, {10,19}};
+  std::vector<std::vector<int>> dots = {{3,6,4}, {2,7,7}, {17,15,45}, {6,12,23}, {13,15,87}, {9,1,56}, {10,19,34}};
 
-  KDTree<int, 2> tree;
+  KDTree<int, 3> tree;
   for (auto &dot : dots){
     Coordinate<int> coord(dot);
     tree.insert(coord);
   }
 
-  std::cout << "Closer coordinate to (0,0): " << tree.search(Coordinate<int>({0, 0})) << std::endl;
-  std::cout << "Is (2,7) in the tree?: " << tree.isInTree(Coordinate<int>({2, 7})) << std::endl;
-  std::cout << "Is (7,13) in the tree?: " << tree.isInTree(Coordinate<int>({7, 13})) << std::endl;
+  std::cout << "Closer coordinate to (0,0,0): " << tree.search(Coordinate<int>({0,0,0})) << std::endl;
+  std::cout << "Is (2,7,7) in the tree?: " << tree.isInTree(Coordinate<int>({2, 7, 7})) << std::endl;
+  std::cout << "Is (7,13,3) in the tree?: " << tree.isInTree(Coordinate<int>({7, 13, 3})) << std::endl;
 
 }
