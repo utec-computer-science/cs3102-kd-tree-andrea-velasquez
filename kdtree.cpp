@@ -120,8 +120,8 @@ int main(){
     tree.insert(coord);
   }
 
-  std::cout << tree.search(Coordinate<int>({0, 0})) << std::endl;
-  std::cout << tree.isInTree(Coordinate<int>({2, 7})) << std::endl;
-  std::cout << tree.isInTree(Coordinate<int>({7, 13})) << std::endl;
+  std::cout << "Closer coordinate to (0,0): " << tree.search(Coordinate<int>({0, 0})) << std::endl;
+  std::cout << "Is (2,7) in the tree?: " << tree.isInTree(Coordinate<int>({2, 7})) << std::endl;
+  std::cout << "Is (7,13) in the tree?: " << tree.isInTree(Coordinate<int>({7, 13})) << std::endl;
 
 }
